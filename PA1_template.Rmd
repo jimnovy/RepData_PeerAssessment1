@@ -37,8 +37,12 @@ The 5 minute interval with the maximum number of steps on average is `r which.ma
 
 
 ## Imputing missing values
-activity[is.na(activity$steps),'steps'] <- sapply(activity[is.na(activity$steps),'interval'],function (x) { StepsPerInterval[as.character(x)]})
 
+Here we impute missing values by filling with average for the interval the missing value is in.
+
+```{r}
+activity[is.na(activity$steps),'steps'] <- sapply(activity[is.na(activity$steps),'interval'],function (x) { StepsPerInterval[as.character(x)]})
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
@@ -48,8 +52,8 @@ par(mfrow=c(2,1))
 
 weekendactivity <- activity[activity$processedday=='Sat' | activity$processedday=='Sun',]
 weekdayactivity <- activity[activity$processedday!='Sat' & activity$processedday!='Sun',]
-weekendStepsPerInterval <- tapply(weekendactivity$steps,weekendactivity$interval,mean,na.rm=TRUE)
-weekdayStepsPerInterval <- tapply(weekdayactivity$steps,weekdayactivity$interval,mean,na.rm=TRUE)
+weekendStepsPerInterval <- tapply(weekendactivity$steps,weekendactivity$interval,mean)
+weekdayStepsPerInterval <- tapply(weekdayactivity$steps,weekdayactivity$interval,mean)
 plot(weekendStepsPerInterval,type='l',main="Weekend Steps Per Interval",xlab="Interval", ylab="Steps")
 plot(weekdayStepsPerInterval,type='l',main="Weekday Steps Per Interval",ylab="Steps",xlab="Interval")
 
