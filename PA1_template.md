@@ -1,39 +1,40 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
-```{r}
+
+```r
 unzip("activity.zip")
 activity <- read.csv("activity.csv")
 library(lubridate)
 activity$processedday <- wday(ymd(activity$date),label=TRUE)
-
 ```
 
 
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 StepsPerDay <- tapply(activity$steps,activity$date,sum,na.rm=TRUE)
 hist(StepsPerDay,main="Histogram of Steps Per Day",xlab="Steps Per Day")
 ```
 
-The mean total number of steps taken per day is `r mean(StepsPerDay,na.rm=TRUE)` and the median is `r median(StepsPerDay,na.rm=TRUE) `
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+The mean total number of steps taken per day is 9354.2295082 and the median is 10395
 
 ## What is the average daily activity pattern?
-```{r}
+
+```r
 StepsPerInterval <-tapply(activity$steps,activity$interval,mean,na.rm=TRUE)
 plot(StepsPerInterval,type="l",main="Steps Per Interval",xlab="Interval",ylab="Steps")
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-The 5 minute interval with the maximum number of steps on average is `r which.max(StepsPerInterval)`
+
+The 5 minute interval with the maximum number of steps on average is 104
 
 
 ## Imputing missing values
@@ -43,7 +44,8 @@ activity[is.na(activity$steps),'steps'] <- sapply(activity[is.na(activity$steps)
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 par(mfrow=c(2,1))
 
 weekendactivity <- activity[activity$processedday=='Sat' | activity$processedday=='Sun',]
@@ -52,6 +54,6 @@ weekendStepsPerInterval <- tapply(weekendactivity$steps,weekendactivity$interval
 weekdayStepsPerInterval <- tapply(weekdayactivity$steps,weekdayactivity$interval,mean,na.rm=TRUE)
 plot(weekendStepsPerInterval,type='l',main="Weekend Steps Per Interval",xlab="Interval", ylab="Steps")
 plot(weekdayStepsPerInterval,type='l',main="Weekday Steps Per Interval",ylab="Steps",xlab="Interval")
-
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
